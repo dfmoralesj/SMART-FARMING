@@ -12,7 +12,8 @@ LiquidCrystal_I2C lcd(0x27,16,2);//Inicializa pantalla LCD con modulo I2C
 int SENSOR = 2; //Inicializa entero PIN D2
 float temp;
 int humedad, Humedad_Suelo; // Iniciailiza variables tipo entero de temperatura y humedad
-int pinOut = 3; //inicializa variable de salida PIN D3
+int pinOut_3 = 3; //inicializa variable de salida PIN D3 BOMBA DE AGUA
+int pinOut_4 = 4; //Inicializa variable de salida PIN D4 Bombilla de luz
 
 DHT dht (SENSOR, DHT22);
 BH1750 sensor;
@@ -23,7 +24,8 @@ void setup() {
     
     lcd.backlight();    //Inicialización luz de fondo LCD
     lcd.init();
-    pinMode (pinOut, OUTPUT);
+    pinMode (pinOut_3, OUTPUT);
+    pinMode (pinOut_4, OUTPUT);
 
     sensor.begin();
     Wire.begin();
@@ -63,13 +65,22 @@ const int HUMEDO = 318; // Valor para Mojado sensor (Valor) 2 de 100% +-5%
 int Porcentaje_Humedad_Suelo= map(Humedad_Suelo, HUMEDO, SECO, 100, 0);
   Serial.print("Porcentaje de Humedad Suelo: "); //Monitor
   Serial.println(Porcentaje_Humedad_Suelo);
+
   
-if (temp >= 26){              //Condicional para activar salida
-    digitalWrite(pinOut, HIGH);
+//CONDICIONALES  
+if (temp >= 26){              //Condicional para activar salida de bomba de agua
+    digitalWrite(pinOut_3, HIGH);
   }
   else {
-    digitalWrite(pinOut, LOW);
+    digitalWrite(pinOut_3, LOW);
   }
+if (lux <= 10){              //Condicional para activar salida de LUZ
+    digitalWrite(pinOut_4, HIGH);
+  }
+  else {
+    digitalWrite(pinOut_4, LOW);
+  }
+  
   // COnfiguración de pantalla LCD
   lcd.begin(16, 2); 
   lcd.setCursor(0,0); 
