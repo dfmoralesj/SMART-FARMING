@@ -1,17 +1,19 @@
+
+//LIBRERIAS
 #include <Wire.h> // 
 #include <LiquidCrystal_I2C.h>
 #include <DHT.h>
 #include <BH1750.h>
 
-BH1750 luxometro(0x23);
+//Manejo de I2C por direccionamiento
+BH1750 luxometro(0x23); // Dirección para sensor de Luz
 
 LiquidCrystal_I2C lcd(0x27,16,2);//Inicializa pantalla LCD con modulo I2C
 
-
-
+//Declaración de variables
 int SENSOR = 2; //Inicializa entero PIN D2
 float temp;
-int humedad, Humedad_Suelo; // Iniciailiza variables tipo entero de temperatura y humedad
+int humedad, Humedad_Suelo, lux; // Iniciailiza variables tipo entero de temperatura y humedad
 int pinOut_3 = 3; //inicializa variable de salida PIN D3 BOMBA DE AGUA
 int pinOut_4 = 4; //Inicializa variable de salida PIN D4 Bombilla de luz
 
@@ -36,7 +38,7 @@ void loop(){
   humedad = dht.readHumidity(); //humedad del sensor
   temp = dht.readTemperature(); //Temperatura del sensor
   Humedad_Suelo = analogRead(A0); //Humedad de suelo SENSOR 109
-  unsigned lux = sensor.readLightLevel(); //Luminosidad del sensor BH1750
+  lux = sensor.readLightLevel(); //Luminosidad del sensor BH1750
 
 
 //DH22 Sensor de temperatura y humedad ambiente
