@@ -16,6 +16,7 @@ float temp;
 int humedad, Humedad_Suelo, lux; // Iniciailiza variables tipo entero de temperatura y humedad
 int pinOut_3 = 3; //inicializa variable de salida PIN D3 BOMBA DE AGUA
 int pinOut_4 = 4; //Inicializa variable de salida PIN D4 Bombilla de luz
+int pinOut_5 = 5; //Inicializa variable de salida PIN D5 Bomba
 
 DHT dht (SENSOR, DHT22);
 BH1750 sensor;
@@ -70,17 +71,24 @@ int Porcentaje_Humedad_Suelo= map(Humedad_Suelo, HUMEDO, SECO, 100, 0);
 
   
 //CONDICIONALES  
-if (temp >= 26){              //Condicional para activar salida de bomba de agua
-    digitalWrite(pinOut_3, HIGH);
-  }
-  else {
+if (temp > 21 && temp < 24){              //Condicional para activar salida de bomba de agua
     digitalWrite(pinOut_3, LOW);
   }
-if (lux <= 10){              //Condicional para activar salida de LUZ
-    digitalWrite(pinOut_4, HIGH);
+  else {
+    digitalWrite(pinOut_3, HIGH);
+  }
+if (lux > 200 && lux < 800){              //Condicional para activar salida de LUZ
+    digitalWrite(pinOut_4, LOW);
   }
   else {
-    digitalWrite(pinOut_4, LOW);
+    digitalWrite(pinOut_4, HIGH);
+  }
+    
+  if (Humedad_Suelo > 400 && Humedad_Suelo < 490){              //Condicional para activar salida de Bomba
+    digitalWrite(pinOut_5, LOW);
+  }
+  else {
+    digitalWrite(pinOut_5, HIGH);
   }
   
   // COnfiguración de pantalla LCD
@@ -91,11 +99,11 @@ if (lux <= 10){              //Condicional para activar salida de LUZ
   lcd.setCursor(2,0); 
   lcd.print(temp);
   lcd.setCursor(7,0); 
-  lcd.print("C");
+  lcd.print(" C");
   //LCD impresion de luminosidad
-  lcd.setCursor(9,0);
+  lcd.setCursor(10,0);
   lcd.print("L: ");
-  lcd.setCursor(11,0);
+  lcd.setCursor(12,0);
   lcd.print(lux);
   //LCD impresion humedad DHT22
   lcd.setCursor(0,1); 
@@ -109,7 +117,7 @@ if (lux <= 10){              //Condicional para activar salida de LUZ
   lcd.print("HSu:"); 
   lcd.setCursor(12,1); 
   lcd.print(Porcentaje_Humedad_Suelo);
-  lcd.setCursor(14,1); 
+  lcd.setCursor(15,1); 
   lcd.print("%");
-  delay(400);
+  delay(200);
 }
